@@ -1,33 +1,56 @@
-# System Monitor Script
+# System Monitor
 
-A simple Bash script that monitors CPU, RAM, and Disk usage on Linux systems and logs alerts when usage exceeds a defined threshold.
+A lightweight system monitoring script that tracks CPU, RAM, and disk
+usage and logs alerts when usage exceeds a configurable threshold.
 
-## Features
-- Monitors CPU, RAM, and Disk usage
-- Logs results with timestamps
-- Sends warnings when usage exceeds 80%
-- Can run automatically via cron
+Available in **two versions** — pick whichever fits your stack:
 
-## Requirements
-- Linux (tested on Ubuntu/Fedora)
-- bc (basic calculator)
+| Version | File | Best for |
+|---------|------|----------|
+| Bash | `monitor.sh` | Zero dependencies, cron jobs |
+| Python | `monitor.py` | Extensibility, containers |
 
-## Usage
-\`\`\`bash
-chmod +x monitor.sh
-./monitor.sh
-\`\`\`
+## Python Version
 
-## Automate with Cron
-Run every 5 minutes:
-\`\`\`bash
+### Requirements
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Usage
+
+Single run (great for cron):
+```bash
+python3 monitor.py
+```
+
+Continuous watch mode (great for Docker):
+```bash
+python3 monitor.py --watch --interval 300
+```
+
+### Threshold Alerting
+
+Any metric above the threshold (default 80%) appends a warning:
+
+```
+2026-09-11 18:58:20 - CPU: 6% | RAM: 34% | Disk: 82%  ⚠️ WARNING: usage above threshold!
+```
+
+## Automate with Cron (Bash or single-run Python)
+
+```bash
 */5 * * * * /full/path/to/monitor.sh
-\`\`\`
+*/5 * * * * cd /path/to/repo && /path/to/.venv/bin/python3 monitor.py
+```
 
-## Sample Output (log file)
-\`\`\`
-2026-08-28 14:00:01 - CPU: 12% | RAM: 45% | Disk: 63%
-\`\`\`
+## Docker
+
+> 🚧 Coming soon — see `Dockerfile`
 
 ## Author
-[ParsaZarabi]
+
+Parsa Zarabi
