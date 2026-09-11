@@ -2,6 +2,7 @@ import psutil
 import time
 import argparse
 from datetime import datetime
+import os
 
 
 class SystemMonitor:
@@ -43,6 +44,8 @@ class SystemMonitor:
 
         if any(v > self.threshold for v in (cpu, ram, disk)):
             line += "  ⚠️ WARNING: usage above threshold!"
+
+        log_path = os.environ.get("LOG_PATH", "system_monitor.log")
 
         # append mode ("a") — never overwrite history
         with open("system_monitor.log", "a") as f:

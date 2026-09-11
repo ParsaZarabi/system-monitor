@@ -49,8 +49,42 @@ Any metric above the threshold (default 80%) appends a warning:
 
 ## Docker
 
-> 🚧 Coming soon — see `Dockerfile`
+The container runs `monitor.py` in watch mode (no cron needed inside).
 
+### Build
+
+```bash
+docker build -t system-monitor:1.1 .
+```
+
+### Run
+
+```bash
+docker run -d --name monitor system-monitor:1.1
+```
+
+### View logs
+
+```bash
+docker logs -f monitor
+```
+
+### Quick test (fast interval)
+
+```bash
+docker run --rm system-monitor:1.1 python -u monitor.py --watch --interval 5
+```
+
+### Design notes
+
+- **`python:3.12-slim`** base image — smaller attack surface & faster pulls
+- **`PYTHONUNBUFFERED=1`** — without it `docker logs` stays empty because
+  Python block-buffers stdout when it's not a TTY
+- **`requirements.txt` copied before code** — leverages layer caching,
+  so pip install is skipped when only `monitor.py` changes
+- **`.dockerignore`** — keeps `.venv/` and log files out of the image
+- **Timestamps are UTC** inside containers (standard for logging —
+  convert to local time in the display layer)
 ## Author
 
 Parsa Zarabi
