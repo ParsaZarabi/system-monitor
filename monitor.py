@@ -48,7 +48,7 @@ class SystemMonitor:
         log_path = os.environ.get("LOG_PATH", "system_monitor.log")
 
         # append mode ("a") — never overwrite history
-        with open("system_monitor.log", "a") as f:
+        with open(log_path, "a") as f:
             f.write(line + "\n")
 
         print(line)
